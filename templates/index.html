@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Merger</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>PDF Merger</h1>
+        <div class="toggle-container">
+            <label class="switch">
+                <input type="checkbox" id="darkModeToggle">
+                <span class="slider round"></span>
+            </label>
+            <span>Dark Mode</span>
+        </div>
+        {% if not num_pdfs %}
+        <form method="POST" action="{{ url_for('index') }}">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.num_pdfs.label }}
+                {{ form.num_pdfs(class="form-control") }}
+            </div>
+            {{ form.submit(class="btn") }}
+        </form>
+        {% else %}
+        <form id="pdfForm" method="POST" action="{{ url_for('merge_pdfs') }}" enctype="multipart/form-data">
+            {% for i in range(num_pdfs) %}
+            <div class="form-group">
+                <label for="pdf{{ i+1 }}">PDF {{ i+1 }}</label>
+                <input type="file" id="pdf{{ i+1 }}" name="pdf" accept=".pdf" required>
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn">Generate Merged PDF</button>
+        </form>
+        {% endif %}
+    </div>
+    <footer class="footer">
+    <p>Developed by <strong>PRAJWAL A BHANDAGI</strong></p>
+</footer>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
